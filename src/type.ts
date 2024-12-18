@@ -1,17 +1,19 @@
 export enum NodeType {
-  ROOT = 'ROOT',
-  COLLECTION = 'CT',
-  OPTIONAL = 'OP',
-  ENUM = 'EM',
-  SPLIT = 'S',
-  REPEAT = 'R',
-  DEFINITION = 'D',
-  VARIABLE = 'V',
-  BLANK = 'B',
-  OTHER = 'O'
+  ROOT = 'root',
+  COLLECTION = 'ct',
+  REPEAT_WRAP = 'rw',
+  OPTIONAL = 'op',
+  ENUM = 'em',
+  GROUP = 'g',
+  SPLIT = 's',
+  REPEAT = 'r',
+  DEFINITION = 'd',
+  VARIABLE = 'v',
+  BLANK = 'b',
+  OTHER = 'o',
 }
 
-export interface CharInfo {
+export interface CharType {
   char: string;
   decode: boolean;
   pos: number;
@@ -19,9 +21,15 @@ export interface CharInfo {
 
 export interface Node {
   type: NodeType;
-  value: string;
+  content: string;
   start: number;
   end: number;
   children?: Node[];
-  name?: string
+  name?: string;
+}
+
+export interface Block {
+  comment: string;
+  content: string;
+  ast: Node;
 }
