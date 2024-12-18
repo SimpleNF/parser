@@ -1,8 +1,10 @@
-import { Node } from './type';
+import { Node, ExchangeType } from './type';
 
 interface WalkOption {
   filter?: (node: Node, parent: Node) => boolean;
+  exchangeType?: ExchangeType;
   exchange?: (node: Node, parent: Node) => Node | void;
+  back?: (node: Node, parent: Node) => void;
 }
 
 const filterChildren = (children: Node[], parent: Node, filter: (node: Node, parent: Node) => boolean) => {
@@ -15,14 +17,32 @@ const filterChildren = (children: Node[], parent: Node, filter: (node: Node, par
   return children.filter((each) => filter(each, parent));
 };
 
-const walkChildren = (children: Node[], parent: Node, exchange: (node: Node, parent: Node) => Node | void) => {
-  for (const node of children) {
-    if (node.children) {
-      node.children = walkChildren(node.children, node, exchange);
-    }
-  }
+const walkChildren = (
+  children: Node[],
+  parent: Node,
+  exchange: (node: Node, parent: Node) => Node | void,
+  back?: (node: Node, parent: Node) => void,
+  exchangeType: ExchangeType = ExchangeType.BEFORE,
+) => {
+  return children.map((node) => {
+    let newNode = node;
 
-  return children.map((node) => exchange(node, parent) ?? node);
+    if ([ExchangeType.BEFORE, ExchangeType.BOTH].includes(exchangeType)) {
+      newNode = exchange(newNode, parent) ?? newNode;
+    }
+
+    if (newNode.children) {
+      newNode.children = walkChildren(newNode.children, newNode, exchange, back, exchangeType);
+    }
+
+    if ([ExchangeType.AFTER, ExchangeType.BOTH].includes(exchangeType)) {
+      newNode = exchange(newNode, parent) ?? newNode;
+    }
+
+    back?.(node, parent);
+
+    return newNode;
+  });
 };
 
 export const walk = (root: Node, option: WalkOption) => {
@@ -42,7 +62,7 @@ export const walk = (root: Node, option: WalkOption) => {
   if (option.exchange) {
     temp = {
       ...temp,
-      children: walkChildren(temp.children, temp, option.exchange),
+      children: walkChildren(temp.children, temp, option.exchange, option.back, option.exchangeType),
     };
   }
 

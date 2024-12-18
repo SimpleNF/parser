@@ -1,4 +1,4 @@
-import { Node, NodeType } from './type';
+import { ExchangeType, Node, NodeType } from './type';
 import { walk } from './walk';
 
 export const cleanBlank = (root: Node) => {
@@ -27,17 +27,34 @@ export const cleanEnum = (root: Node) => {
   });
 };
 
-const addEnumNodeName = (node: Node) => {
+const addEnumNodeName = (node: Node, parent: Node) => {
   if (node.type !== NodeType.ENUM || node.name) return node;
 
   const firstGroup = node.children!.find((each) => each.type === NodeType.GROUP);
   if (!firstGroup || !firstGroup.children) return node;
+
+  const firstEnum = firstGroup.children.find((each) => each.type === NodeType.ENUM);
+  if (firstEnum) {
+    return {
+      ...node,
+      name: firstEnum.name,
+    };
+  }
 
   const firstVar = firstGroup.children.find((each) => each.type === NodeType.VARIABLE);
   if (firstVar) {
     return {
       ...node,
       name: firstVar.content,
+    };
+  }
+
+  const defineNode = parent.children?.find((each) => each.type === NodeType.DEFINITION || each === node);
+
+  if (defineNode && defineNode !== node) {
+    return {
+      ...node,
+      name: defineNode.content,
     };
   }
 
@@ -54,6 +71,7 @@ const addEnumNodeName = (node: Node) => {
 
 export const addEnumName = (root: Node) => {
   return walk(root, {
+    exchangeType: ExchangeType.AFTER,
     exchange: addEnumNodeName,
   });
 };

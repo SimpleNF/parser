@@ -13,6 +13,12 @@ export enum NodeType {
   OTHER = 'o',
 }
 
+export enum ExchangeType {
+  BEFORE = 'b',
+  AFTER = 'a',
+  BOTH = 'ba',
+}
+
 export interface CharType {
   char: string;
   decode: boolean;
@@ -26,10 +32,14 @@ export interface Node {
   end: number;
   children?: Node[];
   name?: string;
+
+  [key: string]: any;
 }
 
 export interface Block {
   comment: string;
   content: string;
   ast: Node;
+
+  [key: string]: any;
 }

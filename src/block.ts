@@ -240,7 +240,7 @@ export class SBNFParser {
     if ([NodeType.OPTIONAL, NodeType.ENUM].includes(node.type)) {
       const contentChildren = children.filter((each) => ![NodeType.BLANK].includes(each.type));
       const len = contentChildren?.length ?? 0;
-      if (len > 3 && contentChildren[len - 2].content === 'as' && contentChildren[len - 1].type === NodeType.VARIABLE) {
+      if (len > 2 && contentChildren[len - 2].content === 'as' && contentChildren[len - 1].type === NodeType.VARIABLE) {
         const name = contentChildren[len - 1].content;
         const index = children.findIndex((each) => each === contentChildren[len - 2]);
         return {
