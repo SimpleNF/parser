@@ -1,5 +1,5 @@
 {
-  "name": "snf-parser",
+  "name": "@zebra/snf-parser",
   "version": "0.0.1",
   "description": "A parser for SNF (Simple Normal Form) grammar",
   "type": "module",
@@ -14,6 +14,7 @@
   "files": [
     "src"
   ],
+  "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
     "test": "tsx test/index.ts"

@@ -147,7 +147,7 @@ export class SBNFParser {
   };
 
   private isDefinitionChar = (char: CharType): boolean => {
-    return /[A-Z]/.test(char.char) || char.decode;
+    return /[A-Z0-9_]/.test(char.char) || char.decode;
   };
 
   private isOtherStartChar = (char: CharType): boolean => {
