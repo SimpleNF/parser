@@ -7,63 +7,31 @@ export const cleanBlank = (root: Node) => {
   });
 };
 
-const cleanEnumInEnum = (node: Node) => {
-  if (node.type !== NodeType.ENUM || !node.children) return node;
-
-  if (node.children.length === 1 && node.children[0].type === NodeType.GROUP) {
-    const group = node.children[0];
-
-    if (group.children?.length === 1 && group.children[0].type === NodeType.ENUM) {
-      return group.children[0];
-    }
-  }
-
-  return node;
-};
-
-export const cleanEnum = (root: Node) => {
-  return walk(root, {
-    exchange: cleanEnumInEnum,
-  });
-};
-
 const addEnumNodeName = (node: Node, parent: Node) => {
   if (node.type !== NodeType.ENUM || node.name) return node;
+
+  const defineNode = parent.children?.find((each) => each.type === NodeType.DEFINITION || each === node);
+
+  if (defineNode && defineNode !== node && !parent.children?.some((each) => each.name === defineNode.content)) {
+    node.name = defineNode.content;
+  }
 
   const firstGroup = node.children!.find((each) => each.type === NodeType.GROUP);
   if (!firstGroup || !firstGroup.children) return node;
 
-  const firstEnum = firstGroup.children.find((each) => each.type === NodeType.ENUM);
-  if (firstEnum) {
-    return {
-      ...node,
-      name: firstEnum.name,
-    };
+  const firstDef = firstGroup.children.find((each) => each.type === NodeType.DEFINITION);
+  if (firstDef) {
+    node.name = firstDef.content;
   }
 
   const firstVar = firstGroup.children.find((each) => each.type === NodeType.VARIABLE);
   if (firstVar) {
-    return {
-      ...node,
-      name: firstVar.content,
-    };
+    node.name = firstVar.content;
   }
 
-  const defineNode = parent.children?.find((each) => each.type === NodeType.DEFINITION || each === node);
-
-  if (defineNode && defineNode !== node) {
-    return {
-      ...node,
-      name: defineNode.content,
-    };
-  }
-
-  const lastDef = firstGroup.children.findLast((each) => each.type === NodeType.DEFINITION);
-  if (lastDef) {
-    return {
-      ...node,
-      name: lastDef.content,
-    };
+  const firstEnum = firstGroup.children.find((each) => each.type === NodeType.ENUM);
+  if (firstEnum) {
+    node.name = firstEnum.content;
   }
 
   return node;
@@ -76,23 +44,31 @@ export const addEnumName = (root: Node) => {
   });
 };
 
-const addRepeatNodeName = (node: Node, parent: Node) => {
-  if (!parent.children || node.type !== NodeType.REPEAT_WRAP || node.name) return node;
+const addLoopNodeName = (node: Node, parent: Node) => {
+  if (!parent.children || node.type !== NodeType.LOOP || node.name) return node;
 
   const index = parent.children.findIndex((each) => each === node);
   if (!index || index < 1) return node;
 
-  const prev = parent.children[index - 1];
-  if (![NodeType.VARIABLE, NodeType.DEFINITION, NodeType.ENUM].includes(prev.type)) return node;
+  for (let i = index - 1; i >= 0; i--) {
+    const prev = parent.children[index - 1];
+    if ([NodeType.VARIABLE, NodeType.DEFINITION, NodeType.ENUM].includes(prev.type)) {
+      node.name = (prev.name || prev.content) + 's';
+      return node;
+    }
+  }
 
-  return {
-    ...node,
-    name: (prev.name || prev.content) + 's',
-  };
+  return node;
 };
 
-export const addRepeatName = (root: Node) => {
+export const addLoopName = (root: Node) => {
   return walk(root, {
-    exchange: addRepeatNodeName,
+    exchange: addLoopNodeName,
+  });
+};
+
+export const copyNode = (root: Node) => {
+  return walk(root, {
+    exchange: (node) => ({ ...node }),
   });
 };

@@ -1,6 +1,6 @@
 import { CharType, Node, NodeType } from './type';
 
-export class SBNFParser {
+export class SNFParser {
   private keywords: string[] = ['[', '{', '|', '}', ']'];
   private pos = 0;
   private input = '';
@@ -207,7 +207,7 @@ export class SBNFParser {
     }
 
     if (contentChildren.some((node) => node.type === NodeType.REPEAT)) {
-      return { ...node, type: NodeType.REPEAT_WRAP };
+      return { ...node, type: NodeType.LOOP };
     }
 
     return {
@@ -290,8 +290,6 @@ export class SBNFParser {
     if (current.children?.length) {
       grouped.push(current);
     }
-
-    grouped = grouped.map((each) => (each.children?.length === 1 ? each.children[0] : each));
 
     return {
       ...node,

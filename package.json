@@ -1,27 +1,45 @@
 {
-  "name": "@zebra/snf-parser",
-  "version": "0.0.1",
+  "name": "snf-parser",
+  "version": "0.0.2",
   "description": "A parser for SNF (Simple Normal Form) grammar",
   "type": "module",
   "author": {
     "name": "baskwind",
     "email": "baskwind@163.com"
   },
+  "homepage": "https://github.com/SimpleNF/parser",
+  "repository": "https://github.com/SimpleNF/parser",
   "keywords": [
     "snf",
     "parser"
   ],
   "files": [
-    "src"
+    "dist"
   ],
-  "main": "src/index.ts",
-  "module": "src/index.ts",
+  "main": "./dist/esm/index.mjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./*": {
+      "import": "./dist/esm/*.mjs",
+      "types": "./dist/types/*.d.ts"
+    }
+  },
   "scripts": {
-    "test": "tsx test/index.ts"
+    "test": "tsx test/index.ts",
+    "build": "vite build"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
     "glob": "^11.0.0",
     "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "vite": "^6.0.5",
+    "vite-plugin-dts": "^4.4.0"
   }
 }

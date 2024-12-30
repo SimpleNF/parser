@@ -1,23 +1,21 @@
-import fs from 'fs';
-import { SBNFParser } from './block';
+import { SNFParser } from './block';
 import { Block, Node } from './type';
 
-export class SBNFFileParser {
-  private codeParser = new SBNFParser();
+export class SNFFileParser {
+  private codeParser = new SNFParser();
 
-  async parse(path: string, ...walks: ((node: Node) => Node)[]) {
-    const content = await fs.promises.readFile(path, 'utf-8');
+  async parse(content: string, ...walks: ((node: Node) => Node)[]) {
     const lines = content.split('\n');
 
-    const blocks: Partial<Block>[] = [];
-    let result = { comment: '', content: '' };
+    let blocks: Partial<Block>[] = [];
+    let result = { comment: '', content: '', name: '' };
 
     for (const line of lines) {
       if (!line.trim()) {
         if (result.comment || result.content) {
           blocks.push(result);
         }
-        result = { comment: '', content: '' };
+        result = { comment: '', content: '', name: '' };
         continue;
       }
       if (line.startsWith('#')) {

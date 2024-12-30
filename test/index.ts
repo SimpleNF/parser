@@ -1,18 +1,20 @@
 import fs from 'fs';
 import path from 'path';
 import { glob } from 'glob';
-import { SBNFFileParser } from '../src/file';
-import { cleanBlank, addEnumName, addRepeatName } from '../src/util';
+import { SNFFileParser } from '../src/file';
+import { cleanBlank, addEnumName, addLoopName } from '../src/util';
+import { walkBlocks } from '../src/walk';
 
 const testPath = path.resolve(import.meta.dirname, './case/*.snf');
 const files = await glob(testPath);
-const fileParser = new SBNFFileParser();
+const fileParser = new SNFFileParser();
 
 for (const file of files) {
   try {
-    const result = await fileParser.parse(file);
+    const content = await fs.readFileSync(file, 'utf-8');
+    const result = await fileParser.parse(content);
     fs.writeFileSync(file.replace('.snf', '.json'), JSON.stringify(result, null, 2));
-    const cleanResult = await fileParser.parse(file, cleanBlank, addEnumName, addRepeatName);
+    const cleanResult = walkBlocks(result, cleanBlank, addEnumName, addLoopName);
     fs.writeFileSync(file.replace('.snf', '.clean.json'), JSON.stringify(cleanResult, null, 2));
   } catch (error) {
     console.error('File:', file);

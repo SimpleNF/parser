@@ -1,7 +1,7 @@
 export enum NodeType {
   ROOT = 'root',
   COLLECTION = 'ct',
-  REPEAT_WRAP = 'rw',
+  LOOP = 'lo',
   OPTIONAL = 'op',
   ENUM = 'em',
   GROUP = 'g',

@@ -1,4 +1,4 @@
-import { Node, ExchangeType } from './type';
+import { Node, ExchangeType, Block } from './type';
 
 interface WalkOption {
   filter?: (node: Node, parent: Node) => boolean;
@@ -50,15 +50,6 @@ export const walk = (root: Node, option: WalkOption) => {
 
   if (!temp.children) return temp;
 
-  if (option.filter) {
-    temp = {
-      ...temp,
-      children: filterChildren(temp.children, temp, option.filter),
-    };
-  }
-
-  if (!temp.children) return temp;
-
   if (option.exchange) {
     temp = {
       ...temp,
@@ -66,5 +57,25 @@ export const walk = (root: Node, option: WalkOption) => {
     };
   }
 
+  if (!temp.children) return temp;
+
+  if (option.filter) {
+    temp = {
+      ...temp,
+      children: filterChildren(temp.children, temp, option.filter),
+    };
+  }
+
   return temp;
+};
+
+export const walkBlocks = (blocks: Block[], ...walks: ((node: Node) => Node)[]) => {
+  return blocks.map((each) => {
+    let newBlock = { ...each };
+    for (const each of walks) {
+      newBlock.ast = each(newBlock.ast);
+    }
+
+    return newBlock;
+  });
 };

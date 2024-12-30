@@ -1,7 +1,11 @@
-export { SBNFParser } from './block';
+export { SNFParser } from './block';
 
-export { SBNFFileParser } from './file';
+export { SNFFileParser } from './file';
 
-export { cleanBlank, cleanEnum, addEnumName, addRepeatName } from './util';
+export type { CharType, Node, Block } from './type';
+
+export { NodeType, ExchangeType } from './type';
+
+export { cleanBlank, addEnumName, addLoopName, copyNode } from './util';
 
 export { walk } from './walk';
