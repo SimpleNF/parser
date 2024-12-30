@@ -14,6 +14,7 @@ const addEnumNodeName = (node: Node, parent: Node) => {
 
   if (defineNode && defineNode !== node && !parent.children?.some((each) => each.name === defineNode.content)) {
     node.name = defineNode.content;
+    return node;
   }
 
   const firstGroup = node.children!.find((each) => each.type === NodeType.GROUP);
@@ -22,16 +23,19 @@ const addEnumNodeName = (node: Node, parent: Node) => {
   const firstDef = firstGroup.children.find((each) => each.type === NodeType.DEFINITION);
   if (firstDef) {
     node.name = firstDef.content;
+    return node;
   }
 
   const firstVar = firstGroup.children.find((each) => each.type === NodeType.VARIABLE);
   if (firstVar) {
     node.name = firstVar.content;
+    return node;
   }
 
   const firstEnum = firstGroup.children.find((each) => each.type === NodeType.ENUM);
   if (firstEnum) {
-    node.name = firstEnum.content;
+    node.name = firstEnum.name;
+    return node;
   }
 
   return node;
