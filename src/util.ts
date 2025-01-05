@@ -55,7 +55,7 @@ const addLoopNodeName = (node: Node, parent: Node) => {
   if (!index || index < 1) return node;
 
   for (let i = index - 1; i >= 0; i--) {
-    const prev = parent.children[index - 1];
+    const prev = parent.children[i];
     if ([NodeType.VARIABLE, NodeType.DEFINITION, NodeType.ENUM].includes(prev.type)) {
       node.name = (prev.name || prev.content) + 's';
       return node;

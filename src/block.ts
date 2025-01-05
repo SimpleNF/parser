@@ -85,6 +85,9 @@ export class SNFParser {
       } else if (this.isBlankChar(info)) {
         this.back();
         nodes.push(this.parseString(NodeType.BLANK, this.isBlankChar, this.isNotBlankChar));
+      } else if (this.isWrapChar(info)) {
+        this.back();
+        nodes.push(this.parseString(NodeType.WRAP, this.isWrapChar, this.isNotWrapChar));
       } else if (this.isOtherStartChar(info)) {
         this.back();
         nodes.push(this.parseString(NodeType.OTHER, this.isOtherChar, this.isBlankChar));
@@ -110,12 +113,20 @@ export class SNFParser {
     };
   }
 
+  private isWrapChar = (char: CharType): boolean => {
+    return /[\r\n]/.test(char.char);
+  };
+
+  private isNotWrapChar = (char: CharType): boolean => {
+    return !/[\r\n]/.test(char.char);
+  };
+
   private isBlankChar = (char: CharType): boolean => {
-    return /\s/.test(char.char);
+    return /[ \t]/.test(char.char);
   };
 
   private isNotBlankChar = (char: CharType): boolean => {
-    return !/\s/.test(char.char);
+    return !/[ \t]/.test(char.char);
   };
 
   private isRepeatStartChar = (char: CharType): boolean => {

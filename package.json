@@ -1,6 +1,6 @@
 {
   "name": "snf-parser",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A parser for SNF (Simple Normal Form) grammar",
   "type": "module",
   "author": {

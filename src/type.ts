@@ -10,6 +10,7 @@ export enum NodeType {
   DEFINITION = 'd',
   VARIABLE = 'v',
   BLANK = 'b',
+  WRAP = 'w',
   OTHER = 'o',
 }
 
