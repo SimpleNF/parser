@@ -1,6 +1,6 @@
 {
   "name": "snf-parser",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A parser for SNF (Simple Normal Form) grammar",
   "type": "module",
   "author": {
@@ -19,25 +19,15 @@
   "main": "./dist/esm/index.mjs",
   "module": "./dist/esm/index.mjs",
   "types": "./dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.mjs",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./*": {
-      "import": "./dist/esm/*.mjs",
-      "types": "./dist/types/*.d.ts"
-    }
-  },
   "scripts": {
     "test": "tsx test/index.ts",
     "build": "vite build"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.5",
     "glob": "^11.0.0",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.5",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7",
     "vite-plugin-dts": "^4.4.0"
   }
 }

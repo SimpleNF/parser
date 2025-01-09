@@ -6,6 +6,6 @@ export type { CharType, Node, Block } from './type';
 
 export { NodeType, ExchangeType } from './type';
 
-export { cleanBlank, addEnumName, addLoopName, copyNode } from './util';
+export { cleanBlank, copyNode } from './util';
 
 export { walk } from './walk';
