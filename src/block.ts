@@ -1,7 +1,7 @@
 import { CharType, Node, NodeType } from './type';
 
 export class SNFParser {
-  private keywords: string[] = ['[', '{', '|', '}', ']'];
+  private keywords: string[] = ['[', '{', '|', '}', ']', `'`, `"`];
   private pos = 0;
   private input = '';
   private closeStack: string[] = [];
@@ -88,6 +88,20 @@ export class SNFParser {
       } else if (this.isWrapChar(info)) {
         this.back();
         nodes.push(this.parseString(NodeType.WRAP, this.isWrapChar, this.isNotWrapChar));
+      } else if (info.char === `'`) {
+        nodes.push({
+          type: NodeType.QUOTE,
+          content: `'`,
+          start: info.pos,
+          end: info.pos + 1,
+        });
+      } else if (info.char === `"`) {
+        nodes.push({
+          type: NodeType.DOUBLEQUOTE,
+          content: `"`,
+          start: info.pos,
+          end: info.pos + 1,
+        });
       } else if (this.isOtherStartChar(info)) {
         this.back();
         nodes.push(this.parseString(NodeType.OTHER, this.isOtherChar, this.isBlankChar));

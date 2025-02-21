@@ -11,6 +11,8 @@ export enum NodeType {
   VARIABLE = 'v',
   BLANK = 'b',
   WRAP = 'w',
+  QUOTE = 'q',
+  DOUBLEQUOTE = 'dq',
   OTHER = 'o',
 }
 

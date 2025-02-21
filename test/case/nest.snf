@@ -16,5 +16,5 @@ CREATE [OR REPLACE] FUNCTION name ([arg[, ...]])
 [AS 'file', 'link']
 [sql_body]
 
-# where arg
+# WHERE arg
 [argmode] [argname] argtype [{DEFAULT|=} default]

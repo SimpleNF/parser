@@ -1,12 +1,9 @@
 {
   "name": "snf-parser",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A parser for SNF (Simple Normal Form) grammar",
   "type": "module",
-  "author": {
-    "name": "baskwind",
-    "email": "baskwind@163.com"
-  },
+  "author": "baskwind <baskwind@163.com>",
   "homepage": "https://github.com/SimpleNF/parser",
   "repository": "https://github.com/SimpleNF/parser",
   "keywords": [
@@ -18,16 +15,16 @@
   ],
   "main": "./dist/esm/index.mjs",
   "module": "./dist/esm/index.mjs",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/type/index.d.ts",
   "scripts": {
     "test": "tsx test/index.ts",
     "build": "vite build"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5",
-    "glob": "^11.0.0",
+    "@types/node": "^22.13.4",
+    "glob": "^11.0.1",
     "typescript": "^5.7.3",
-    "vite": "^6.0.7",
-    "vite-plugin-dts": "^4.4.0"
+    "vite": "^6.1.1",
+    "vite-plugin-dts": "^4.5.0"
   }
 }
